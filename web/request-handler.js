@@ -6,6 +6,7 @@ var archive = require('../helpers/archive-helpers');
 var httpHelpers = require('./http-helpers');
 var fs = require('fs');
 var filed = require('filed');
+var fetcher = require('../workers/htmlfetcher.js');
 // require more modules/folders here!
 
 

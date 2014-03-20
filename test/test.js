@@ -4,6 +4,7 @@ var stubs = require("./stubs/stubs");
 var fs = require('fs');
 var archive = require("../helpers/archive-helpers");
 var path = require('path');
+var filed = require('filed');
 var res;
 
 archive.initialize({
@@ -40,6 +41,8 @@ describe("Node Server Request Listener Function", function() {
   it("Should answer GET requests for archived websites", function(done) {
     var fixtureName = "www.google.com";
     var req = new stubs.Request("/" + fixtureName, "GET");
+    // www.google.com
+    // "/", type: 'POST', {url: }
 
     handler.handleRequest(req, res);
 
