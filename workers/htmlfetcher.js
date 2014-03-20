@@ -13,21 +13,30 @@ var downloadFiles = function() {
   archive.readListOfUrls(function(array) {
     var index = array[0]; // we expect index to be a number telling us the last downloaded link
     // for loop starting from index until < array.length
-    index+=1;
+    index++;
+    console.log(index);
+    console.log(array);
     for(index; index < array.length-1; index++) {
-      var data = '';
-      // for each item, run downloader
-      console.log("We're going for " + array[index]);
-      http.get({host: array[index], port: 80, path:'/'}, function(res) {
-        var file = fs.createWriteStream(array[index]);
-        console.log("Created writeStream for " + array[index]);
-        console.log("Beginning get request for " + array[index]);
-        res.pipe(file);
-        file.on('finish', function(){
-          file.close();
-        console.log('got the file from ' + array[index]);
+      (function(url){
+        var data = '';
+        console.log(index);
+        // for each item, run downloader
+        console.log("We're going for " + url);
+        http.get({host: url, port: 80, path:'/'}, function(res) {
+          // console.log(res);
+          var file = fs.createWriteStream(url);
+          console.log("Created writeStream for " + url);
+          console.log("Beginning get request for " + url);
+          res.pipe(file);
+          file.on('finish', function(){
+            file.close();
+            console.log('got the file from ' + res.headers.location);
+          });
+        }).on('error', function(err) {
+          console.log("GET error: " + err);
         });
-      });
+      })(array[index]);
+      console.log(index);
     }
     // update array[0]
 
