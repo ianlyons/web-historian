@@ -33,10 +33,11 @@ exports.readListOfUrls = function(callback){
     if(exists){
       fs.stat(fileName, function(error, stats){
         fs.open(fileName, "r", function(error, fd){
-          var buffer = new Buffer(stats.size);
+          var buffer = new Buffer(stats.size+1);
           fs.read(fd, buffer, 0, buffer.length, null, function(error, bytesRead, buffer){
             var data = buffer.toString("utf8", 0, buffer.length);
-            array = data.toString().split("\n");
+            array = data.toString().split(",");
+            console.log(array);
             callback(array);
             fs.close(fd);
           });
@@ -62,7 +63,7 @@ exports.addUrlToList = function(url){
   var fileName = exports.paths.list;
   fs.exists(fileName, function(exists){
     if(exists){
-      var urlString = url + '\n';
+      var urlString = url + ',';
       fs.appendFile(fileName, urlString, function(err) {
         if(err) { console.log('addUrlToList didn\'t work for some reason. Error: ' + err); }
       });
@@ -80,6 +81,18 @@ exports.isURLArchived = function(url){
       result = true;
     }
   return result;
+  });
+};
+
+exports.updateIndex = function(num){
+  var fileName = exports.paths.list;
+  fs.readFile(fileName, {encoding: 'utf-8'}, function(err, data){
+    var dataArray = data.split(',');
+    dataArray[0] = num;
+    dataArray = dataArray.join(',');
+    fs.writeFile(fileName, dataArray, function(err){
+      if(err) { console.log('Error in writeFile: ' + err); }
+    });
   });
 };
 

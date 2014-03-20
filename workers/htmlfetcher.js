@@ -14,32 +14,26 @@ var downloadFiles = function() {
     var index = array[0]; // we expect index to be a number telling us the last downloaded link
     // for loop starting from index until < array.length
     index++;
-    console.log(index);
-    console.log(array);
+    console.log('index',  index);
     for(index; index < array.length-1; index++) {
       (function(url){
         var data = '';
-        console.log(index);
         // for each item, run downloader
-        console.log("We're going for " + url);
         http.get({host: url, port: 80, path:'/'}, function(res) {
-          // console.log(res);
-          var file = fs.createWriteStream(url);
-          console.log("Created writeStream for " + url);
-          console.log("Beginning get request for " + url);
+          console.log(url);
+          //update to get these into the archives folder
+          var file = fs.createWriteStream(__dirname + '/../archives/sites/' + url);
           res.pipe(file);
           file.on('finish', function(){
+            console.log("finished writing.");
             file.close();
-            console.log('got the file from ' + res.headers.location);
           });
         }).on('error', function(err) {
           console.log("GET error: " + err);
         });
       })(array[index]);
-      console.log(index);
     }
-    // update array[0]
-
+    archive.updateIndex(array.length);
   });
 };
 
