@@ -2,6 +2,7 @@ var fs = require('fs');
 var path = require('path');
 var _ = require('underscore');
 
+
 /*
  * You will need to reuse the same paths many times over in the course of this sprint.
  * Consider using the `paths` object below to store frequently used file paths. This way,
@@ -59,7 +60,6 @@ exports.isUrlInList = function(url, callback){
 
 exports.addUrlToList = function(url){
   var fileName = exports.paths.list;
-  console.log(fileName);
   fs.exists(fileName, function(exists){
     if(exists){
       var urlString = url + '\n';
@@ -85,5 +85,3 @@ exports.isURLArchived = function(url){
 
 exports.downloadUrls = function(){
 };
-
-exports.addUrlToList('www.gizoogle.com');

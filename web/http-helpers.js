@@ -1,4 +1,4 @@
-/* global exports, require  */
+/* global exports, require, __dirname  */
 /* exported path, fs, archive, headers */
 
 var path = require('path');
@@ -13,7 +13,27 @@ exports.headers = headers = {
   'Content-Type': 'text/html'
 };
 
-exports.serveAssets = function(res, asset) {
+exports.serveAssets = function(res, asset, status) {
+  var status = status || 200;
+  if(asset === null) {
+    asset = __dirname + '/public/loading.html';
+  } else {
+    console.log('into the existing asset clause')
+    asset = __dirname + '/../archives/sites/' + asset;
+  }
+  console.log(asset);
+
+  fs.readFile(asset, function(error, data){
+    if(error){
+      res.writeHead(404, {"Content-type":"text.plain"});
+      res.end("Sorry the page was not found");
+    } else{
+      res.writeHead(status,{"Content-type":"text/html"});
+      res.end(data);
+    }
+  });
+  //res.writeHead(status, headers);
+  //res.end(asset);
   // Write some code here that helps serve up your static files!
   // (Static files are things like html (yours or archived from others...), css, or anything that doesn't change often.)
 };

@@ -17,18 +17,18 @@ exports.handleRequest = function (req, res) {
   if(req.url === "/"){
     console.log("serving index.html");
     req.pipe(filed(__dirname + '/public/index.html')).pipe(res);
-  } else{
+  } else {
     req.pipe(filed(__dirname + '/public' + req.url)).pipe(res);
   }
   if(req.method === 'POST') {
     httpHelpers.collectData(req, function(data) {
       var url = data.substring(4);
-      archive.isUrlInList('url', function(result) {
-        if(true) {
-          // get the site HTML and serve it to the user WITH A CALLBACK
+      archive.isUrlInList(url, function(result) {
+        if(result) {
+          httpHelpers.serveAssets(res, url);
         } else {
-          // add the site url to the list to be crawled
-          // serve loading.html
+          httpHelpers.serveAssets(res, null, 202);
+          archive.addUrlToList(url);
         }
       });
 
