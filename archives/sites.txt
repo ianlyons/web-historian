@@ -1,1 +1,1 @@
-6,www.google.com,www.yahoo.com,www.imdb.com,www.washingtonpost.com,
+1,www.google.com,www.yahoo.com,www.imdb.com,www.washingtonpost.com,
